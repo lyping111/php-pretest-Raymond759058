@@ -6,8 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $confirm_password = $_POST['password'];
 
-    $qry=$conn->prepare("SELECT * FROM users WHERE username=?");
-    $qry->bind_param("s",$username);
+    $qry=$conn->prepare("SELECT * FROM users WHERE email=?");
+    $qry->bind_param("s",$email);
     $qry->execute();
     $result=$qry->get_result();
     if($result->num_rows>0){
@@ -19,8 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($password === $confirm_password) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         // $hashed_password=md5($password);
-        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-        $stmt->bind_param("ss", $username, $hashed_password);
+        $stmt = $conn->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
+        $stmt->bind_param("ss", $email, $hashed_password);
         $stmt->execute();
         $stmt->close();
         echo "login successful!";

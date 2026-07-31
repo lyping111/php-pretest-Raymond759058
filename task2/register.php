@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm_password = $_POST['password'];
 
     $qry=$conn->prepare("SELECT * FROM users WHERE email=?");
-    $qry->bind_param("s",$username);
+    $qry->bind_param("s",$email);
     $qry->execute();
     $result=$qry->get_result();
     if($result->num_rows>0){
