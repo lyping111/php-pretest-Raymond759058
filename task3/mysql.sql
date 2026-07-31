@@ -17,7 +17,7 @@ create table if not exists product(
     
     -- update product set product_name ='Food' where id=1;
     
-    -- delete from product where id<2;
+    -- delete from product where id=2;
     
     -- alter table product drop column employees;
     
