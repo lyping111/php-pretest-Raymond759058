@@ -1,3 +1,35 @@
+<?php
+include 'db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirm_password = $_POST['password'];
+
+    $qry=$conn->prepare("SELECT * FROM users WHERE email=?");
+    $qry->bind_param("s",$email);
+    $qry->execute();
+    $result=$qry->get_result();
+    if($result->num_rows>0){
+        echo $result->num_rows;
+        echo "Email already exists!";
+        exit();
+    }
+
+    if ($password === $confirm_password) {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        // $hashed_password=md5($password);
+        $stmt = $conn->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
+        $stmt->bind_param("ss", $email, $hashed_password);
+        $stmt->execute();
+        $stmt->close();
+        echo "Registration successful!";
+    } else {
+        echo "Passwords do not match!";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +37,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+
+
+
+.box{
+    background:yellow;
+    width: 50%;
+    margin:auto;
+    margin-top:40px;
+    padding:30px;
+    border-radius:10px;
+    border:3px solid #ff6666;
+}
+
+h1{
+    font-size:30px;
+}
+button{
+    font-size:30px;
+}
+p{
+    font-size:30px;
+}
+label{
+    display: block;
+    font-size:30px;
+    margin: 12px 0 6px;
+}
+
+input {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    font-size: 18px;
+    box-sizing: border-box;
+}
+
+a{
+    font-size:30px;
+    color:blue;
+}
+
+</style>
+</head>
+
 <body>
+
+<div class="box">
     
+    <h1>Register</h1>
+    <form action="register.php" method="post">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+        <h2 for="password">Password:</h2>
+        <input type="password" name="password" id="password" required>
+        <button type="submit">Register</button>
+    </form>
+    <p>Don't have an account? <a href="login.php">Login here</a></p>
+</div>
 </body>
 </html>
