@@ -26,6 +26,8 @@ create table if not exists product(
     -- alter table product modify weight varchar(50);
     
     -- alter table product change cbm cubic_meter varchar(100);
+
+    -- select id,receiving_Date from product order by id desc; --asc
     
 	-- drop table products;    
 
